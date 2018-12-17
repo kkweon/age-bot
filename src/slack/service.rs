@@ -23,7 +23,9 @@ pub fn verify(ts: i64, body: String, slack_signature: String, config: &Config) -
     let mut mac = HmacSha256::new_varkey(config.slack_signing_secret.as_bytes()).unwrap();
     mac.input(sig_basestr.as_bytes());
 
-    match mac.verify(slack_signature.as_bytes()) {
+    println!("slack_signature => {}", slack_signature);
+
+    match mac.verify(slack_signature.replace("v0=", "").as_bytes()) {
         Ok(()) => true,
         _ => false,
     }
