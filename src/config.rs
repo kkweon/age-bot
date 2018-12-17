@@ -4,12 +4,14 @@ use std::fmt::{Display, Formatter};
 pub struct Config {
     pub port: u16,
     pub slack_signing_secret: String,
+    pub slack_verification_token: String,
 }
 
 pub enum ConfigErr {
     PortErr,
     InvalidPortParseErr,
     SlackSecretErr,
+    SlackVerificationToeknErr,
 }
 
 impl Display for ConfigErr {
@@ -20,6 +22,10 @@ impl Display for ConfigErr {
             ConfigErr::SlackSecretErr => writeln!(
                 f,
                 "environment variable $SLACK_SIGNING_SECRET is not defined"
+            ),
+            ConfigErr::SlackVerificationToeknErr => writeln!(
+                f,
+                "environment variable SLACK_VERIFICATION_TOKEN is not defined"
             ),
         };
         Ok(())
@@ -34,8 +40,12 @@ pub fn get_config_from_env() -> Result<Config, ConfigErr> {
 
     let slack_signing_secret =
         std::env::var("SLACK_SIGNING_SECRET").map_err(|_| ConfigErr::SlackSecretErr)?;
+
+    let slack_verification_token = std::env::var("SLACK_VERIFICATION_TOKEN")
+        .map_err(|_| ConfigErr::SlackVerificationToeknErr)?;
     Ok(Config {
         port: port_int,
         slack_signing_secret,
+        slack_verification_token,
     })
 }

@@ -24,9 +24,13 @@ pub fn verify(ts: i64, body: String, slack_signature: String, config: &Config) -
     mac.input(sig_basestr.as_bytes());
 
     println!("slack_signature => {}", slack_signature);
+    // let result = mac.result();
+    // let code_bytes = result.code();
 
-    match mac.verify(slack_signature.replace("v0=", "").as_bytes()) {
-        Ok(()) => true,
-        _ => false,
-    }
+    match mac.verify(slack_signature.replace("v0=", "").as_ref()) {
+        Ok(()) => println!("verified"),
+            _ => println!("not verified"),
+    };
+
+    false
 }
