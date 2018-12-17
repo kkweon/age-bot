@@ -23,4 +23,14 @@ pub struct SlackCommand {
 #[derive(Serialize)]
 pub struct SlackResponse {
     pub text: String,
+    pub response_type: SlackResponseType,
+}
+
+#[derive(Serialize)]
+pub enum SlackResponseType {
+    #[serde(rename = "in_channel")]
+    InChannel,
+
+    #[serde(rename = "ephemeral")]
+    Ephemeral,
 }

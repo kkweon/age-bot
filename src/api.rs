@@ -2,7 +2,8 @@ use crate::config::Config;
 use actix_web::{App, HttpMessage, HttpRequest};
 use futures::prelude::Future;
 
-mod handlers;
+pub mod handlers;
+pub mod service;
 
 pub fn get_app(config: Config) -> App<Config> {
     App::with_state(config)
