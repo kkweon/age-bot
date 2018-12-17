@@ -16,6 +16,8 @@ pub fn verify(ts: i64, body: String, slack_signature: String, config: &Config) -
         return false;
     }
     let sig_basestr = format!("v0:{}:{}", ts, body);
+    println!("sig_basestr =>");
+    println!("{}", sig_basestr);
 
     let mut mac = HmacSha256::new_varkey(config.slack_signing_secret.as_bytes()).unwrap();
     mac.input(sig_basestr.as_bytes());
