@@ -1,9 +1,11 @@
-use actix_web::{App, http};
+use crate::config::Config;
+use actix_web::{App, HttpMessage, HttpRequest};
+use futures::prelude::Future;
 
 mod handlers;
 
-pub fn get_app() -> App<()> {
-    App::new()
-        .resource("/api/slack", |r| r.method(http::Method::POST).with(handlers::command))
+pub fn get_app(config: Config) -> App<Config> {
+    App::with_state(config)
+        .resource("/api/slack", |r| r.post().with(handlers::command))
         .resource("/healthcheck", |r| r.f(handlers::healthcheck))
 }
