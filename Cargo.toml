@@ -13,5 +13,5 @@ actix-web = "0.7.16"                  # Actix web is a simple, pragmatic and ext
 chrono = "0.4.6"                    # Date and time library for Rust
 futures = "0.1.25"                # An implementation of futures and streams featuring zero allocations, composability, and itera…
 bytes = "0.4.11"            # Types and traits for working with bytes
-hmac = "0.7.0"          # Generic implementation of Hash-based Message Authentication Code (HMAC)
-sha2 = "0.8.0"                # SHA-2 hash functions
+failure = "0.1.3"                             # Experimental error handling abstraction.
+env_logger = "0.6.0"                # A logging implementation for `log` which is configured via an environment variable.

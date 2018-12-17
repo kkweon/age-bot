@@ -2,6 +2,9 @@ use actix_web::server;
 use age_bot::config;
 
 fn main() {
+    std::env::set_var("RUST_LOG", "actix_web=info");
+    env_logger::init();
+
     let config = config::get_config_from_env();
 
     match config {

@@ -1,5 +1,3 @@
-use std::fmt::{Display, Formatter};
-
 #[derive(Clone)]
 pub struct Config {
     pub port: u16,
@@ -7,29 +5,18 @@ pub struct Config {
     pub slack_verification_token: String,
 }
 
+#[derive(Fail, Debug)]
 pub enum ConfigErr {
+    #[fail(display = "$PORT is not available")]
     PortErr,
+    #[fail(display = "$PORT is not valid (not a positive integer)")]
     InvalidPortParseErr,
-    SlackSecretErr,
-    SlackVerificationToeknErr,
-}
 
-impl Display for ConfigErr {
-    fn fmt(self: &Self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
-        match self {
-            ConfigErr::PortErr => writeln!(f, "Env variable $PORT is not set/invalid"),
-            ConfigErr::InvalidPortParseErr => writeln!(f, "$PORT has to be positive integer"),
-            ConfigErr::SlackSecretErr => writeln!(
-                f,
-                "environment variable $SLACK_SIGNING_SECRET is not defined"
-            ),
-            ConfigErr::SlackVerificationToeknErr => writeln!(
-                f,
-                "environment variable SLACK_VERIFICATION_TOKEN is not defined"
-            ),
-        };
-        Ok(())
-    }
+    #[fail(display = "$SLACK_SIGNING_SECRET is undefined")]
+    SlackSecretErr,
+
+    #[fail(display = "$SLACK_VERIFICATION_TOKEN is undefined")]
+    SlackVerificationToeknErr,
 }
 
 pub fn get_config_from_env() -> Result<Config, ConfigErr> {
@@ -43,6 +30,7 @@ pub fn get_config_from_env() -> Result<Config, ConfigErr> {
 
     let slack_verification_token = std::env::var("SLACK_VERIFICATION_TOKEN")
         .map_err(|_| ConfigErr::SlackVerificationToeknErr)?;
+
     Ok(Config {
         port: port_int,
         slack_signing_secret,
