@@ -12,6 +12,7 @@ use sha2::Sha256;
 type HmacSha256 = Hmac<Sha256>;
 
 pub fn verify(ts: i64, body: String, slack_signature: String, config: &Config) -> bool {
+    println!("ts => {}", ts);
     if 60 * 5 < (Utc::now().timestamp() - ts).abs() {
         return false;
     }
